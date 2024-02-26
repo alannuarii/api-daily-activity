@@ -1,0 +1,17 @@
+CREATE TABLE activity
+(
+    id SERIAL PRIMARY KEY,
+    tanggal DATE NOT NULL,
+    jenis VARCHAR(10) NOT NULL,
+    perusahaan VARCHAR(30) NOT NULL,
+    pekerjaan VARCHAR(75) NOT NULL,
+    kode VARCHAR(6) NOT NULL
+);
+
+CREATE TABLE photo
+(
+    id SERIAL PRIMARY KEY,
+    tanggal DATE NOT NULL,
+    kode VARCHAR(6) NOT NULL,
+    foto VARCHAR(100) NOT NULL
+)

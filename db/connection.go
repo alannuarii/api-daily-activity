@@ -1,22 +1,22 @@
 package db
 
 import (
+	"database/sql"
 	"log"
 	"os"
-	"api-daily-activity/models"
+
 	"github.com/joho/godotenv"
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
+	_ "github.com/lib/pq"
 )
 
-var DB *gorm.DB
+var DB *sql.DB
 
-func ConnectionDatabase(){
+func ConnectionDatabase() {
 	err := godotenv.Load(".env")
-	if err != nil{
+	if err != nil {
 		log.Fatalf("Error loading .env file: %v", err)
 	}
-	
+
 	username := os.Getenv("DB_USERNAME")
 	password := os.Getenv("DB_PASSWORD")
 	host := os.Getenv("DB_HOST")
@@ -26,20 +26,18 @@ func ConnectionDatabase(){
 
 	dsn := "user=" + username + " password=" + password + " host=" + host + " port=" + port + " dbname=" + name + " sslmode=" + sslmode
 
-	database, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-	if err != nil{
+	database, err := sql.Open("postgres", dsn)
+	if err != nil {
 		log.Fatalf("Error connecting to database: %v", err)
 	}
 
-    err = database.AutoMigrate(&models.Activity{})
-    if err != nil {
-        log.Fatalf("Error migrating database: %v", err)
-    }
+	err = database.Ping()
+	if err != nil {
+		log.Fatalf("Error pinging database: %v", err)
+	}
 
-	err = database.AutoMigrate(&models.Photo{})
-    if err != nil {
-        log.Fatalf("Error migrating database: %v", err)
-    }
+	DB = database
 
-    DB = database
+	// Menutup koneksi secara otomatis setelah selesai menggunakan koneksi
+	// defer DB.Close()
 }
