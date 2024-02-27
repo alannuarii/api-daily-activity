@@ -1,17 +1,12 @@
 package models
 
 type Activity struct {
-    ID         uint      `json:"id"`
-    Tanggal    string    `json:"tanggal"`
-    Jenis      string    `json:"jenis"`
-    Perusahaan string    `json:"perusahaan"`
-    Pekerjaan  string    `json:"pekerjaan"`
-    Kode       string    `json:"kode"`
+    ID          int    `db:"id" json:"id"`
+    Tanggal     string `db:"tanggal" json:"tanggal"`
+    Jenis       string `db:"jenis" json:"jenis"`
+    Pekerjaan   string `db:"pekerjaan" json:"pekerjaan"`
+    Kode        string `db:"kode" json:"kode"`
+    Perusahaan  string `db:"perusahaan" json:"perusahaan"`
+    Foto        string `db:"foto" json:"foto"`
 }
 
-type Photo struct {
-    ID      uint      `json:"id"`
-    Tanggal string   `json:"tanggal"`
-    Kode    string    `json:"kode"`
-    Foto    string    `json:"foto"`
-}

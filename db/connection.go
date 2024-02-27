@@ -1,43 +1,35 @@
 package db
 
 import (
-	"database/sql"
-	"log"
-	"os"
+    "log"
+    "os"
 
-	"github.com/joho/godotenv"
-	_ "github.com/lib/pq"
+    "github.com/joho/godotenv"
+    "github.com/jmoiron/sqlx"
+    _ "github.com/lib/pq"
 )
 
-var DB *sql.DB
+var DB *sqlx.DB
 
-func ConnectionDatabase() {
-	err := godotenv.Load(".env")
-	if err != nil {
-		log.Fatalf("Error loading .env file: %v", err)
-	}
+func init() {
+    err := godotenv.Load(".env")
+    if err != nil {
+        log.Fatalf("Error loading .env file: %v", err)
+    }
 
-	username := os.Getenv("DB_USERNAME")
-	password := os.Getenv("DB_PASSWORD")
-	host := os.Getenv("DB_HOST")
-	port := os.Getenv("DB_PORT")
-	name := os.Getenv("DB_NAME")
-	sslmode := os.Getenv("DB_SSLMODE")
+    username := os.Getenv("DB_USERNAME")
+    password := os.Getenv("DB_PASSWORD")
+    host := os.Getenv("DB_HOST")
+    port := os.Getenv("DB_PORT")
+    name := os.Getenv("DB_NAME")
+    sslmode := os.Getenv("DB_SSLMODE")
 
-	dsn := "user=" + username + " password=" + password + " host=" + host + " port=" + port + " dbname=" + name + " sslmode=" + sslmode
+    dsn := "user=" + username + " password=" + password + " host=" + host + " port=" + port + " dbname=" + name + " sslmode=" + sslmode
 
-	database, err := sql.Open("postgres", dsn)
-	if err != nil {
-		log.Fatalf("Error connecting to database: %v", err)
-	}
+    db, err := sqlx.Connect("postgres", dsn)
+    if err != nil {
+        log.Fatalf("Error connecting to database: %v", err)
+    }
 
-	err = database.Ping()
-	if err != nil {
-		log.Fatalf("Error pinging database: %v", err)
-	}
-
-	DB = database
-
-	// Menutup koneksi secara otomatis setelah selesai menggunakan koneksi
-	// defer DB.Close()
+    DB = db
 }
