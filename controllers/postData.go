@@ -72,6 +72,8 @@ func PostPhotos(c *gin.Context) {
 
     db := db.DB
 
+    kodeData := c.Param("kode")
+
     err := c.Request.ParseMultipartForm(0)
     if err != nil {
         c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"message": "Gagal memproses data FormData"})
@@ -81,7 +83,7 @@ func PostPhotos(c *gin.Context) {
 
     tanggal := c.Request.FormValue("tanggal")
     pekerjaan := c.Request.FormValue("pekerjaan")
-    kode := c.Request.FormValue("kode")
+    kode := kodeData
 
     fotos := c.Request.MultipartForm.File["foto"]
     destination := "static/img"

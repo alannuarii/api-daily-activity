@@ -13,7 +13,7 @@ func main() {
     r.GET("/api/activity2/:kode", controllers.GetActivityParam2)
 
     r.POST("/api/activity", controllers.PostActivity)
-    r.POST("/api/photos", controllers.PostPhotos)
+    r.POST("/api/photos/:kode", controllers.PostPhotos)
 
     r.Run(":8888")
 }
